@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Instagram OAuth Callback</title>
+</head>
+<body>
+  <h1>Instagram authorization</h1>
+  <p id="status">Waiting for authorization…</p>
+  <pre id="code"></pre>
+  <button id="copy" hidden>Copy authorization code</button>
+
+  <script>
+    const params = new URLSearchParams(location.search);
+    const code = params.get("code");
+    const error = params.get("error_description") || params.get("error");
+
+    const status = document.getElementById("status");
+    const codeDisplay = document.getElementById("code");
+    const copyButton = document.getElementById("copy");
+
+    if (error) {
+      status.textContent = "Authorization failed: " + error;
+    } else if (code) {
+      status.textContent = "Authorization code received.";
+      codeDisplay.textContent = code;
+      copyButton.hidden = false;
+      copyButton.onclick = () => navigator.clipboard.writeText(code);
+    }
+  </script>
+</body>
+</html>
